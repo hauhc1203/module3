@@ -24,7 +24,7 @@ alter table baitapthem.Subjects
 	modify column SubjectName nvarchar(10000) not null;
     
 -- 7.
--- chua xong
+-- chua xong...
 update baitapthem.Subjects 
 set SubjectName='Day la mon hoc'+SubjectName;
 
