@@ -3,10 +3,10 @@ select	* from baitapthem.Students;
 -- 2.Hien thi danh sach mon hoc
 select * from baitapthem.Subjects;
 -- 3.tinh diem trung binh 
-select	s.StudentID, s.StudentName, sj.SubjectName ,avg(m.Mark)
-from	baitapthem.Students as s, baitapthem.Subjects as sj, baitapthem.Marks as m
-where 	s.StudentID=m.StudentID and m.SubjectID=sj.SubjectID
-group by StudentID ,SubjectName
+select s.StudentName, avg(m.Mark) as 'diem trung binh'
+from	baitapthem.Students as s,  baitapthem.Marks as m
+where 	s.StudentID=m.StudentID 
+group by StudentName 
 ;
 
 -- 4.hien thi mon hoc co hoc sinh duoc diem cao nhat
