@@ -21,12 +21,13 @@ select * from baitapthem.Marks as m
 order by m.Mark desc;
 -- 6.thay doi kdl cua Subject name
 alter table baitapthem.Subjects 
-	modify column SubjectName nvarchar(10000) not null;
+	modify column SubjectName nvarchar(255) not null;
     
 -- 7.
 -- chua xong...
 update baitapthem.Subjects 
-set SubjectName='Day la mon hoc'+SubjectName;
+set SubjectName='Day la mon hoc'+SubjectName
+where SubjectID>0;
 
 
 -- 8.
