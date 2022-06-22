@@ -132,17 +132,7 @@ CREATE TRIGGER  tgSetStatus AFTER INSERT
 ON Student  
 FOR EACH ROW
 BEGIN
-	UPDATE new_table AS s 
-SET 
-    s.a = 10
-WHERE
-    s.a < 30 ;
-
-	UPDATE new_table AS s 
-SET 
-    s.a = 50
-WHERE
-    s.a >= 6;
+	
 END;
 -- DELIMITER;
 
