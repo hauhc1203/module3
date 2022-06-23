@@ -25,8 +25,8 @@ alter table baitapthem.Subjects
     
 -- 7.
 -- chua xong...
-update baitapthem.Subjects AS s
-set s.SubjectName=concat('Day la mon hoc',s.SubjectName)
+update baitapthem.Subjects 
+set SubjectName=concat('Day la mon hoc ',SubjectName)
 where SubjectID>0;
 
 

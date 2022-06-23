@@ -127,20 +127,41 @@ CREATE VIEW vwStudentTestList AS
 
 
 DROP Trigger tgSetStatus;
-DELIMITER //
-CREATE TRIGGER  tgSetStatus AFTER INSERT
+DELIMITER $$
+CREATE TRIGGER  tgSetStatus BEFORE UPDATE
 ON Student  
 FOR EACH ROW
 BEGIN
-	
-END;
--- DELIMITER;
+IF NEW.Age<30 THEN
 
-INSERT INTO Student(Name,Age) VALUE	('Mai Thanh ha',34);
+	SET new.Status='Young';
+ELSE 
+	SET new.Status='Old';
+END IF;
+END$$
+DELIMITER ;
+
+
+DROP Trigger tgSetStatus1;
+DELIMITER //
+CREATE TRIGGER  tgSetStatus1 BEFORE INSERT
+ON Student  
+FOR EACH ROW
+BEGIN
+IF NEW.Age<30 THEN
+
+	SET NEW.Status='Young';
+ELSE 
+	SET NEW.Status='Old';
+END IF;
+END// 
+DELIMITER ;
+
+INSERT INTO Student(Name,Age) VALUE	('the chot',34);
 
 UPDATE Student 
 SET Age=22
-WHERE Rn=1;
+WHERE Rn=34;
 
 
 -- 14
