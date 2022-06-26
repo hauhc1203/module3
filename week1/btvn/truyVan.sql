@@ -85,7 +85,7 @@ FROM
 -- 9
 	UPDATE Student AS s 
 SET 
-    s.Age = s.Age + 1
+    s.Age = s.Age +1
 WHERE
     s.Rn > 0;
 -- 10
@@ -94,20 +94,16 @@ ADD COLUMN Status VARCHAR(10) DEFAULT null;
 
 -- 11
 	UPDATE Student AS s 
-SET 
-    s.Status = 'Young'
+	SET 
+    s.Status = if(s.Age<30,'Young','Old')
 WHERE
-    s.Age < 30 AND s.Rn > 0;
+    s.Rn > 0;
 
-	UPDATE Student AS s 
-SET 
-    s.Status = 'Old'
-WHERE
-    s.Age >= 30 AND s.Rn > 0;
 
 -- 12
-CREATE VIEW vwStudentTestList AS
+CREATE VIEW vwStudentTestList11 AS
     SELECT 
+		s.Rn,
         s.Name AS 'Student Name',
         t.TestName AS 'Test Name',
         st.Mark,
@@ -126,36 +122,33 @@ CREATE VIEW vwStudentTestList AS
 
 
 
-DROP Trigger tgSetStatus;
+
 DELIMITER $$
+DROP TRIGGER IF EXISTS `tgSetStatus`$$
 CREATE TRIGGER  tgSetStatus BEFORE UPDATE
 ON Student  
 FOR EACH ROW
 BEGIN
-IF NEW.Age<30 THEN
-
-	SET new.Status='Young';
-ELSE 
-	SET new.Status='Old';
-END IF;
+	SET NEW.Status	=if(new.Age<30,'Young','Old');
 END$$
 DELIMITER ;
 
 
-DROP Trigger tgSetStatus1;
 DELIMITER //
+DROP TRIGGER IF EXISTS `tgSetStatus1`//
+
 CREATE TRIGGER  tgSetStatus1 BEFORE INSERT
 ON Student  
 FOR EACH ROW
 BEGIN
-IF NEW.Age<30 THEN
-
-	SET NEW.Status='Young';
-ELSE 
-	SET NEW.Status='Old';
-END IF;
+SET NEW.Status	=if(new.Age<30,'Young','Old');
 END// 
 DELIMITER ;
+
+
+DROP TRIGGER tgSetStatus1;
+
+DROP TRIGGER tgSetStatus;
 
 INSERT INTO Student(Name,Age) VALUE	('the chot',34);
 
@@ -192,6 +185,12 @@ CREATE PROCEDURE spViewStatus(IN sName NVARCHAR(20),IN sjName NVARCHAR(20),OUT o
 	END;
 //DELIMITER ;
 
-CALL spViewStatus('Tuan Minh','SQL1',@a,@b);
-SELECT @a as 'Trạng thái ',@b as 'Điểm';
-
+ DELIMITER $$
+DROP TRIGGER IF EXISTS `tgSetStatus`$$
+CREATE TRIGGER  tgSetStatus BEFORE UPDATE
+ON Student  
+FOR EACH ROW
+BEGIN
+	SET NEW.Status	=if(new.Age<30,'Young','Old');
+END$$
+DELIMITER ;
