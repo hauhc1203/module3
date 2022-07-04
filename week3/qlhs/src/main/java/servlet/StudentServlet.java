@@ -59,6 +59,7 @@ public class StudentServlet extends HttpServlet {
                     requestDispatcher=req.getRequestDispatcher("/hocsinh.jsp");
                     break;
                 default:
+                    hocSinhs=studentDao.selectAllHocSinhs();
                     requestDispatcher=req.getRequestDispatcher("/hocsinh.jsp");
 
 
@@ -74,6 +75,8 @@ public class StudentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int msv;
+        req.setCharacterEncoding("utf-8");
+        String key= req.getParameter("key");
         String name=req.getParameter("name");
         String email=req.getParameter("email");
         String ngaysinh=req.getParameter("birthday");
@@ -81,25 +84,24 @@ public class StudentServlet extends HttpServlet {
         String sdt=req.getParameter("sdt");
         String malop=req.getParameter("malop");
         String acction=req.getParameter("action");
-        RequestDispatcher requestDispatcher;
         switch (acction){
             case "create":
                 inSert(create(name,email,ngaysinh,diachi,sdt,malop));
                 hocSinhs=studentDao.selectAllHocSinhs();
-                requestDispatcher=req.getRequestDispatcher("/hocsinh.jsp");
+
                 break;
             case "edit":
                 msv= Integer.parseInt(req.getParameter("id"));
                 editHS(msv,name,email,ngaysinh,diachi,sdt,malop);
                 hocSinhs=studentDao.selectAllHocSinhs();
-                requestDispatcher=req.getRequestDispatcher("/hocsinh.jsp");
                 break;
-            default:
-                requestDispatcher=req.getRequestDispatcher("/hocsinh.jsp");
-
+            case "search":
+                key = "%"+key+"%";
+                hocSinhs=studentDao.search(key);
+                break;
         }
         req.setAttribute("hocSinhs",hocSinhs);
-
+        RequestDispatcher requestDispatcher=req.getRequestDispatcher("/hocsinh.jsp");
         requestDispatcher.forward(req,resp);
     }
 

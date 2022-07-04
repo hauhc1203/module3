@@ -37,8 +37,20 @@
 <table>
     <tr>
     <tr><th colspan="9">Danh sách Học Sinh</th></tr>
-    <tr><td colspan="9" style="text-align: left"><a href="/student?action=create"><button type="button" class="btn btn-primary">Create</button>
-    </a></td></tr>
+    <tr>
+        <td colspan="2" style="text-align: left">
+            <a href="/student?action=create">
+            <button type="button" class="btn btn-primary">Create</button>
+            </a>
+        </td>
+        <td colspan="7" style="text-align: right">
+            <form action="/student?action=search" method="post">
+                <input type="text" placeholder="nhập vào tên" name="key" required>
+                <button type="submit" class="btn btn-info">Search</button>
+            </form>
+        </td>
+
+    </tr>
         <th>MÃ SV</th>
         <th>Tên</th>
         <th>Ngày Sinh</th>
@@ -59,14 +71,24 @@
             <td>${hs.malop}</td>
             <td><a href="/student?action=edit&id=${hs.id}"><button type="button" class="btn btn-warning">Edit</button>
             </a></td>
-            <td><a href="/student?action=delete&id=${hs.id}"><button type="button" class="btn btn-danger">Delete</button>
+            <td><a  href="/student?action=delete&id=${hs.id}"  class="delete"  ><button type="button" class="btn btn-danger" >Delete</button>
             </a></td>
         </tr>
     </c:forEach>
 
 </table>
-
 </body>
-
+<script>
+    let deleteLinks = document.querySelectorAll('.delete');
+    for (let i = 0; i < deleteLinks.length; i++) {
+        deleteLinks[i].addEventListener('click', function(event) {
+            event.preventDefault();
+            let choice = confirm("Bạn chắc chắn xóa?");
+            if (choice) {
+                window.location.href = this.getAttribute('href');
+            }
+        });
+    }
+</script>
 </html>
 

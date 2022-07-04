@@ -16,6 +16,7 @@ public class StudentDao implements IStudent{
 
     private static final String INSERT_HS_SQL = "INSERT INTO HocSinh (TenHS, BirthDay, Address,SDT,Email,MaLOP) VALUES (?,?,?,?,?,?);";
     private static final String SELECT_ALL_HS = "select * from HocSinh;";
+    private static final String SEARCH_HS = "select * from HocSinh where TenHS like ? ;";
     private static final String DELETE_HS_SQL = "delete from HocSinh where MSV = ?;";
     private static final String SELECT_HS_SQL = "select * from HocSinh  where MSV = ?;";
 
@@ -113,4 +114,32 @@ public class StudentDao implements IStudent{
         }
         return false;
     }
+
+
+    public ArrayList<HocSinh> search(String key) {
+        ArrayList<HocSinh> hocSinhs =new ArrayList<>();
+        try (Connection connection= ConnectDB.getConnect(); PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_HS)){
+            preparedStatement.setString(1,key);
+
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()){
+                int id=rs.getInt("MSV");
+                String name = rs.getString("TenHS");
+                String birthDay = rs.getString("BirthDay");
+                String address = rs.getString("Address");
+                String sdt = rs.getString("SDT");
+                String email = rs.getString("Email");
+                int maLop=rs.getInt("MaLOP");
+                hocSinhs.add(new HocSinh(id,name,birthDay,address,sdt,email,maLop));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        return hocSinhs;
+    }
+
 }

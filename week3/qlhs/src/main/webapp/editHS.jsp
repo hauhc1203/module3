@@ -12,6 +12,8 @@
 <html>
 <head>
     <title>Thêm Học Sinh</title>
+    <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
@@ -59,9 +61,9 @@
     Số điện thoại <br>
     <input type="tel" placeholder="nhập vào số điện thoại" name="sdt" required value="${hs.sdt}"><br><br>
     Lớp <br>
-    <select  name="malop" onselect="${hs.malop}" onfocus="this.selectedIndex">
+    <select  id="sel" name="malop">
         <c:forEach var="lop" items="${lops}">
-            <option value="${lop.maLop}">
+            <option value="${lop.maLop}" class="tenlop">
                     ${lop.tenLop}</option>
         </c:forEach>
     </select>
@@ -69,5 +71,17 @@
     <button type="submit" class="btn btn-primary">EDIT</button>
 
 </form>
+
 </body>
+<script>
+        let x=${hs.malop};
+        let dslop = document.querySelectorAll('.tenlop');
+        for (let i = 0; i < dslop.length; i++) {
+         let value1= dslop[i].getAttribute('value')
+            if (value1==x){
+                dslop[i].setAttribute('selected',true)
+            }
+
+    }
+</script>
 </html>
